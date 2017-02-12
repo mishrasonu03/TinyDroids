@@ -15,7 +15,6 @@ import java.text.NumberFormat;
 public class MainActivity extends AppCompatActivity {
 
     private int quantity = 1;
-    private String[] emailID = new String[]{"mishrasonu1993@gmail.com"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
     public void submitOrder(View view) {
         EditText nameEditText = (EditText) findViewById(R.id.name_edit_text);
         String name = nameEditText.getText().toString();
-        if(name == null || name.length() == 0) {
-            Toast.makeText(getApplicationContext(), "please write your name",
+        if (name == null || name.length() == 0) {
+            Toast.makeText(getApplicationContext(), getString(R.string.write_name),
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -42,8 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
         int price = calculatePrice(hasWhippedCream, hasChocolate);
         String priceMessage = createOrderSummary(price, name, hasWhippedCream, hasChocolate);
-        String subjectMessage = "Order for " + name;
+        String subjectMessage = getString(R.string.order_for) + " " + name;
 
+        String[] emailID = new String[1];
+        emailID[0] = getString(R.string.email_id);
         composeEmail(emailID, subjectMessage, priceMessage);
     }
 
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 "\nWhipped Cream: " + (hasWhippedCream ? "Yes" : "No") +
                 "\nChocolate: " + (hasChocolate ? "Yes" : "No") +
                 "\nTotal: " + price +
-                "\nThank You!";
+                "\n" + getString(R.string.thank_you);
     }
 
     /**
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the + button is clicked.
      */
     public void increment(View view) {
-        if(quantity == 100) {
+        if (quantity == 100) {
             Toast.makeText(getApplicationContext(), "cannot order more than 100 cups of coffees",
                     Toast.LENGTH_SHORT).show();
             return;
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the - button is clicked.
      */
     public void decrement(View view) {
-        if(quantity == 1) {
+        if (quantity == 1) {
             Toast.makeText(getApplicationContext(), "cannot order less than 1 cup of coffee",
                     Toast.LENGTH_SHORT).show();
             return;
