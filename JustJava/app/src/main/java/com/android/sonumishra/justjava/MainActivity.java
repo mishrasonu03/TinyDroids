@@ -4,13 +4,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int quantity = 0;
+    private int quantity = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,27 +23,42 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        int price = calculatePrice();
-        CheckBox toppingCheckBox = (CheckBox) findViewById(R.id.topping_checkbox);
-        boolean hasWhippedCream = toppingCheckBox.isEnabled();
-        String priceMessage = createOrderSummary(price, hasWhippedCream);
+        EditText nameEditText = (EditText) findViewById(R.id.name_edit_text);
+        String name = nameEditText.getText().toString();
+        if(name == null || name.length() == 0) {
+            Toast.makeText(getApplicationContext(), "please write your name",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        CheckBox creamCheckBox = (CheckBox) findViewById(R.id.cream_checkbox);
+        boolean hasWhippedCream = creamCheckBox.isChecked();
+
+        CheckBox chocolateCheckBox = (CheckBox) findViewById(R.id.chocolate_checkbox);
+        boolean hasChocolate = chocolateCheckBox.isChecked();
+
+        int price = calculatePrice(hasWhippedCream, hasChocolate);
+
+        String priceMessage = createOrderSummary(price, name, hasWhippedCream, hasChocolate);
         displayMessage(priceMessage);
     }
 
     /**
      * This method calculates the price of order
      */
-    public int calculatePrice() {
-        return quantity * 5;
+    public int calculatePrice(boolean hasWhippedCream, boolean hasChocolate) {
+        int basePrice = 5 + (hasWhippedCream ? 1 : 0) + (hasChocolate ? 2 : 0);
+        return quantity * basePrice;
     }
 
     /**
      * This method generates the summary message
      */
-    public String createOrderSummary(int price, boolean hasWhippedCream) {
-        return "Name: Sonu Mishra" +
+    public String createOrderSummary(int price, String name, boolean hasWhippedCream, boolean hasChocolate) {
+        return "Name: " + name +
                 "\nQuantity: " + quantity +
                 "\nWhipped Cream: " + (hasWhippedCream ? "Yes" : "No") +
+                "\nChocolate: " + (hasChocolate ? "Yes" : "No") +
                 "\nTotal: " + price +
                 "\nThank You!";
     }
@@ -58,19 +75,28 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the + button is clicked.
      */
     public void increment(View view) {
+        if(quantity == 100) {
+            Toast.makeText(getApplicationContext(), "cannot order more than 100 cups of coffees",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         quantity++;
         display(quantity);
-        displayPrice(calculatePrice());
+        //displayPrice(calculatePrice());
     }
 
     /**
      * This method is called when the - button is clicked.
      */
     public void decrement(View view) {
-        if(quantity <= 0) return;
+        if(quantity == 1) {
+            Toast.makeText(getApplicationContext(), "cannot order less than 1 cup of coffee",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         quantity--;
         display(quantity);
-        displayPrice(calculatePrice());
+        //displayPrice(calculatePrice());
     }
 
     /**
