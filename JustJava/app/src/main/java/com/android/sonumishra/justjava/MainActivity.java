@@ -70,6 +70,17 @@ public class MainActivity extends AppCompatActivity {
         return quantity * basePrice;
     }
 
+
+    public int calculatePrice() {
+        CheckBox creamCheckBox = (CheckBox) findViewById(R.id.cream_checkbox);
+        boolean hasWhippedCream = creamCheckBox.isChecked();
+
+        CheckBox chocolateCheckBox = (CheckBox) findViewById(R.id.chocolate_checkbox);
+        boolean hasChocolate = chocolateCheckBox.isChecked();
+
+        return calculatePrice(hasWhippedCream, hasChocolate);
+    }
+
     /**
      * This method generates the summary message
      */
@@ -101,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         }
         quantity++;
         display(quantity);
-        //displayPrice(calculatePrice());
+        displayPrice(calculatePrice());
     }
 
     /**
@@ -115,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         }
         quantity--;
         display(quantity);
-        //displayPrice(calculatePrice());
+        displayPrice(calculatePrice());
     }
 
     /**
