@@ -1,5 +1,7 @@
 package com.android.sonumishra.justjava;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +15,8 @@ import java.text.NumberFormat;
 public class MainActivity extends AppCompatActivity {
 
     private int quantity = 1;
+    private String[] emailID = new String[]{"mishrasonu1993@gmail.com"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
             return;
         }
-
         CheckBox creamCheckBox = (CheckBox) findViewById(R.id.cream_checkbox);
         boolean hasWhippedCream = creamCheckBox.isChecked();
 
@@ -38,9 +41,24 @@ public class MainActivity extends AppCompatActivity {
         boolean hasChocolate = chocolateCheckBox.isChecked();
 
         int price = calculatePrice(hasWhippedCream, hasChocolate);
-
         String priceMessage = createOrderSummary(price, name, hasWhippedCream, hasChocolate);
-        displayMessage(priceMessage);
+        String subjectMessage = "Order for " + name;
+
+        composeEmail(emailID, subjectMessage, priceMessage);
+    }
+
+    /**
+     * This method is sends the order summary through email.
+     */
+    public void composeEmail(String[] addresses, String subject, String message) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     /**
