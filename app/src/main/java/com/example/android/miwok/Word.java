@@ -30,6 +30,9 @@ public class Word {
     /** Image of the word*/
     private int mImageResourceId;
 
+    /** Audio of the word*/
+    private int mAudioResourceId;
+
     /**
      * Create a new Word object.
      *
@@ -37,11 +40,13 @@ public class Word {
      *                           (such as English)
      * @param miwokTranslation is the word in the Miwok language
      *
+     * @param audioResourceId is the resource id of the audio file
      */
-    public Word(String defaultTranslation, String miwokTranslation) {
+    public Word(String defaultTranslation, String miwokTranslation, int audioResourceId) {
         mDefaultTranslation = defaultTranslation;
         mMiwokTranslation = miwokTranslation;
         mImageResourceId = -1;
+        mAudioResourceId = audioResourceId;
     }
 
     /**
@@ -52,11 +57,14 @@ public class Word {
      * @param miwokTranslation is the word in the Miwok language
      *
      * @param imageSource is the source of the image
+     *
+     * @param audioResourceId is the resource id of the audio file
      */
-    public Word(String defaultTranslation, String miwokTranslation, int imageSource) {
+    public Word(String defaultTranslation, String miwokTranslation, int imageSource, int audioResourceId) {
         mDefaultTranslation = defaultTranslation;
         mMiwokTranslation = miwokTranslation;
         mImageResourceId = imageSource;
+        mAudioResourceId = audioResourceId;
     }
 
     /**
@@ -78,6 +86,13 @@ public class Word {
      */
     public int getImageResourceId() {
         return mImageResourceId;
+    }
+
+    /**
+     * Get the audio source of the word.
+     */
+    public int getAudioResourceId() {
+        return mAudioResourceId;
     }
 
 }
